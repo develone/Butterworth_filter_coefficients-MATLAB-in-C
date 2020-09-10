@@ -41,7 +41,7 @@
 #include <string.h>
 #include <math.h>
 #include "iir.h"
-
+#include "liir.c"
 int main( int argc, char *argv[] )
 {
     int n;            // filter order
@@ -101,6 +101,12 @@ int main( int argc, char *argv[] )
     fprintf( fp, "# Filter order: %d\n", n );
     fprintf( fp, "# Cutoff freq.: %1.15lf\n", fcf );
     fprintf( fp, "# Scaling factor: %1.15lf\n", sf );
+    
+    printf( "# Butterworth lowpass filter coefficients.\n" );
+    printf( "# Produced by bwlp.\n" );
+    printf( "# Filter order: %d   \n",  n );
+    printf( "# Cutoff freq.: %1.15lf\n", fcf );
+    printf( "# Scaling factor: %1.15lf\n", sf );
 
     /* Output the c coefficients */
     fprintf( fp, "%d\n", n+1 ); /* number of c coefficients */
@@ -108,13 +114,17 @@ int main( int argc, char *argv[] )
         for( i = 0; i <= n; ++i)
 	    fprintf( fp, "%d\n", ccof[i] );
     else
-        for( i = 0; i <= n; ++i)
+        for( i = 0; i <= n; ++i) { 
 	    fprintf( fp, "%1.15lf\n", (double)ccof[i]*sf );
+        printf( "%1.15lf\n", (double)ccof[i]*sf );
+        }
 
     /* Output the d coefficients */
     fprintf( fp, "%d\n", n+1 );  /* number of d coefficients */
-    for( i = 0; i <= n; ++i )
+    for( i = 0; i <= n; ++i ) {
 	fprintf( fp, "%1.12lf\n", dcof[i] );
+    printf( "%1.12lf\n", dcof[i] );
+    }
 
     fclose( fp );
     free( dcof );
